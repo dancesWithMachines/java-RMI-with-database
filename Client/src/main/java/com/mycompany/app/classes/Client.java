@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.client.Classes;
+package com.mycompany.app.classes;
 
-import com.mycompany.client.Interfaces.PartsInterface;
-import com.mycompany.client.Interfaces.UsersInterface;
-import com.mycompany.client.Models.Part;
-import com.mycompany.client.Models.User;
+import com.mycompany.app.interfaces.PartsInterface;
+import com.mycompany.app.interfaces.UsersInterface;
+import com.mycompany.app.models.Part;
+import com.mycompany.app.models.User;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.client.Frames;
+package com.mycompany.app.frames;
 
-import com.mycompany.client.Classes.Client;
+import com.mycompany.app.classes.Client;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -124,12 +124,12 @@ public class LoginFrame extends javax.swing.JFrame {
             ErrorFrame error = new ErrorFrame(ex.getMessage());
             error.setVisible(true);
         }
-        if (loginInput.toString() == "" || passwordInput.toString() == ""){
+        if (loginInput.getText() == "" || passwordInput.getText() == ""){
             ErrorFrame error = new ErrorFrame("Some fields are empty");
             error.setVisible(true);
         } else {
             try {
-                client.checkCredentials(loginInput.toString(), passwordInput.toString());
+                client.checkCredentials(loginInput.getText(), passwordInput.getText());
                 ErrorFrame error = new ErrorFrame("Success");
                 error.setVisible(true);
             } catch (Exception ex) {

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.server.classes;
+package com.mycompany.app.classes;
 
-import com.mycompany.server.interfaces.PartsInterface;
-import com.mycompany.server.interfaces.UsersInterface;
-import com.mycompany.server.models.Part;
-import com.mycompany.server.models.User;
+import com.mycompany.app.interfaces.PartsInterface;
+import com.mycompany.app.interfaces.UsersInterface;
+import com.mycompany.app.models.Part;
+import com.mycompany.app.models.User;
 import java.sql.Statement;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -34,10 +34,10 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         }
     }
     
-    String url = "javax.persistence.jdbc.url";
-    String user = "javax.persistence.jdbc.user";
-    String driver = "javax.persistence.jdbc.driver";
-    String password = "javax.persistence.jdbc.password";
+    String url = "jdbc:mysql://remotemysql.com:3306/bBx5ctrGX5?zeroDateTimeBehavior=CONVERT_TO_NULL";
+    String user = "bBx5ctrGX5";
+    String driver = "com.mysql.cj.jdbc.Driver";
+    String password = "b8rEvkFkDa";
     Connection connection = null; 
     Statement statement = null; 
     
@@ -104,8 +104,9 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
 
     @Override
     public User checkCredentials(String userName, String password) throws Exception {
+        System.out.println(userName);
         Class.forName(driver);
-        connection = DriverManager.getConnection(url, user, password);
+        connection = DriverManager.getConnection(url, user, this.password);
         statement = connection.createStatement();
         String sql = "SELECT * FROM Users where login=\""+ userName +"\"";
         ResultSet resultSet = statement.executeQuery(sql);
@@ -113,6 +114,7 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         while (resultSet.next()){
             user = new User(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("password"));
         }
+        System.out.println(user);
         resultSet.close();
         connection.close();
         if (password != user.getPassword())

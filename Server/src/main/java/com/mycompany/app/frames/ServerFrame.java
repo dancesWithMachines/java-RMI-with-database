@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.server.frames;
+package com.mycompany.app.frames;
 
-import com.mycompany.server.classes.Server;
+import com.mycompany.app.classes.Server;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

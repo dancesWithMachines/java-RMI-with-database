@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.client.Classes;
+package com.mycompany.app.classes;
 
-import com.mycompany.client.Frames.ClientFrame;
-import com.mycompany.client.Frames.LoginFrame;
+import com.mycompany.app.frames.ServerFrame;
 
 /**
  *
@@ -16,9 +15,9 @@ public class Main {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
           public void run() {
-               LoginFrame frame = new LoginFrame();
+               ServerFrame frame = new ServerFrame();
                frame.setVisible(true);
           }
     }); 
-    }
+    }   
 }

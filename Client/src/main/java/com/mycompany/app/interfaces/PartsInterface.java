@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.client.Interfaces;
+package com.mycompany.app.interfaces;
 
-import com.mycompany.client.Models.Part;
-import com.mycompany.client.Models.User;
+import com.mycompany.app.models.Part;
+import com.mycompany.app.models.User;
 import java.util.*;
 import java.rmi.Remote; 
 import java.rmi.RemoteException; 
