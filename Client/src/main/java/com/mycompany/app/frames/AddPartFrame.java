@@ -5,6 +5,11 @@
  */
 package com.mycompany.app.frames;
 
+import com.mycompany.app.classes.Client;
+import com.mycompany.app.models.Part;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Timax
@@ -14,8 +19,12 @@ public class AddPartFrame extends javax.swing.JFrame {
     /**
      * Creates new form AddPartFrame
      */
-    public AddPartFrame() {
+    Client client;
+    
+    public AddPartFrame(Client client) {
         initComponents();
+        this.client = client;
+        
     }
 
     /**
@@ -48,6 +57,11 @@ public class AddPartFrame extends javax.swing.JFrame {
         jLabel4.setText("Quantity");
 
         jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -102,6 +116,20 @@ public class AddPartFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Part part = new Part(0,partNumber.getText(), partName.getText(), manufacturer.getText(), Integer.parseInt(quantity.getText()));
+        part.setAddedBy(client.getUser());
+        try {
+            client.addPart(part);
+            this.setVisible(false);   
+            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(AddPartFrame.class.getName()).log(Level.SEVERE, null, ex);
+            ErrorFrame err = new ErrorFrame(ex.getMessage());
+            err.setVisible(true);
+        }        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -132,7 +160,7 @@ public class AddPartFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddPartFrame().setVisible(true);
+                new AddPartFrame(null).setVisible(true);
             }
         });
     }

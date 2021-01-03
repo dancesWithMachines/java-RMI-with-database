@@ -18,6 +18,6 @@ public interface PartsInterface extends Remote {
     public List<Part> getAllParts() throws Exception;
     public List<Part> getPart(String partId) throws Exception;
     public Part getSinglePart(int partId) throws Exception;
-    public void addPart(Part part, User creator) throws Exception;
+    public void addPart(Part part) throws Exception;
     public void removePart(int partId) throws Exception;
 }

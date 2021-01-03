@@ -70,6 +70,7 @@ public class ClientFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(list);
 
+        findField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         findField.setToolTipText("Search part number");
 
         findButton.setText("FIND");
@@ -80,16 +81,22 @@ public class ClientFrame extends javax.swing.JFrame {
         });
 
         idField.setEditable(false);
+        idField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         partNumberField.setEditable(false);
+        partNumberField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         partNameField.setEditable(false);
+        partNameField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         manufacturerField.setEditable(false);
+        manufacturerField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         quantityField.setEditable(false);
+        quantityField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         addedByField.setEditable(false);
+        addedByField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         jLabel1.setText("ID");
 
@@ -104,8 +111,18 @@ public class ClientFrame extends javax.swing.JFrame {
         jLabel6.setText("Added by");
 
         deleteButton.setText("Delete");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,25 +209,49 @@ public class ClientFrame extends javax.swing.JFrame {
     private void findButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findButtonActionPerformed
         setList(client);
     }//GEN-LAST:event_findButtonActionPerformed
-
+    
+    int index = -1;
     private void listValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listValueChanged
-        int index = list.getSelectedIndex();
-        setDetails(index);
+        index = list.getSelectedIndex();
+        if (index >=0)
+            setDetails(index);
     }//GEN-LAST:event_listValueChanged
 
-    private void setDetails(int index){
-        Part part = partsList.get(index);
-        idField.setText(String.valueOf(part.getId()));
-        partNumberField.setText(part.getPartNumber());
-        manufacturerField.setText(part.getManufacturer());
-        partNameField.setText(part.getName());
-        quantityField.setText(String.valueOf(part.getQuantity()));
-        addedByField.setText(String.valueOf(part.getAddedBy().getId()));
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (index>=0){
+            deletePart(index);
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        AddPartFrame apf = new AddPartFrame(client);
+        apf.setVisible(true);
+    }//GEN-LAST:event_addButtonActionPerformed
+
+    private void deletePart(int index){
         try {
-            addedByField.setText(addedByField.getText() +" (" + client.getUserName(part.getAddedBy().getId())+")");
+            client.removePart(partsList.get(index).getId());
         } catch (Exception ex) {
             Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-            openErrorMessage("Cannot get username of creator");
+            openErrorMessage("Cannod remove part");
+        }
+    }
+    
+    private void setDetails(int index){
+        if (partsList.size()>0){
+            Part part = partsList.get(index);
+            idField.setText(String.valueOf(part.getId()));
+            partNumberField.setText(part.getPartNumber());
+            manufacturerField.setText(part.getManufacturer());
+            partNameField.setText(part.getName());
+            quantityField.setText(String.valueOf(part.getQuantity()));
+            addedByField.setText(String.valueOf(part.getAddedBy().getId()));
+            try {
+                addedByField.setText(addedByField.getText() +" (" + client.getUserName(part.getAddedBy().getId())+")");
+            } catch (Exception ex) {
+                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                openErrorMessage("Cannot get username of creator");
+            }
         }
     }
     
@@ -264,26 +305,30 @@ public class ClientFrame extends javax.swing.JFrame {
          if (findField.getText().equals("")){
             try {
                 partsList = client.getAllParts();
-                listModel = new DefaultListModel<>();
-                for (int i=0; i < partsList.size(); i++){
-                    listModel.addElement(partsList.get(i).getPartNumber());
+                if (partsList.size() > 0){
+                    listModel = new DefaultListModel<>();
+                    for (int i=0; i < partsList.size(); i++){
+                        listModel.addElement(partsList.get(i).getPartNumber());
+                    }
+                    list.setModel(listModel);
                 }
-                list.setModel(listModel);                 
             } catch (Exception ex) {
                 Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-                openErrorMessage(ex.getMessage());
+                openErrorMessage("No parts to display");
             }
         } else {
              try {
                 partsList = client.getPart(findField.getText());
-                listModel = new DefaultListModel<>();
-                for (int i=0; i < partsList.size(); i++){
-                    listModel.addElement(partsList.get(i).getPartNumber());
+                if (partsList.size() > 0){
+                    listModel = new DefaultListModel<>();
+                    for (int i=0; i < partsList.size(); i++){
+                        listModel.addElement(partsList.get(i).getPartNumber());
+                    }
+                    list.setModel(listModel);
                 }
-                list.setModel(listModel);                 
             } catch (Exception ex) {
                 Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
-                openErrorMessage(ex.getMessage());
+                openErrorMessage("No parts to display");
             }
         }
     }

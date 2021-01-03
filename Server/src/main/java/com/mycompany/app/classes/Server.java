@@ -82,7 +82,7 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
     }
 
     @Override
-    public void addPart(Part part, User creator) throws Exception {
+    public void addPart(Part part) throws Exception {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
@@ -92,9 +92,9 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
             "   \""+ part.getName() +"\",\n" +
             "   \""+ part.getManufacturer() +"\",\n" +
             "   "+ part.getQuantity() +",\n" +
-            "   "+ creator.getId() +"\n" +
+            "   "+ part.getAddedBy().getId() +"\n" +
             ")";
-        ResultSet resultSet = statement.executeQuery(sql);
+        statement.executeUpdate(sql);
         connection.close();
     }
 
@@ -103,8 +103,8 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
-        String sql = "DELETE FROM Parts WHERE id=\""+ String.valueOf(partId) +"\"";
-        ResultSet resultSet = statement.executeQuery(sql);
+        String sql = "DELETE FROM Parts WHERE id="+ String.valueOf(partId);
+        statement.executeUpdate(sql);
         connection.close();
     }
 

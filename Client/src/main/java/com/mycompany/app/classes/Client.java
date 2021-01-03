@@ -30,6 +30,10 @@ public class Client {
     
     private User user = null;
     
+    public User getUser(){
+        return user;
+    }
+    
     public Client() throws RemoteException, NotBoundException {
         //Client c = new Client();
         this.connectRemote();
@@ -58,7 +62,7 @@ public class Client {
     public void addPart(Part part) throws Exception{
         if (user == null)
             throw new Exception("NO USER");
-        parts.addPart(part, user);
+        parts.addPart(part);
     }
     
     public void removePart (int partId) throws Exception{
