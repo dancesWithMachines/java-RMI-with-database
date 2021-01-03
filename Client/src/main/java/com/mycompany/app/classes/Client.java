@@ -73,4 +73,11 @@ public class Client {
     public String getUserName (int usrId) throws Exception{
         return users.getUserName(usrId);
     }
+    
+    public Part getSinglePart (int partId) throws Exception{
+        if (user != null)
+            return parts.getSinglePart(partId);
+        else
+            throw new Exception("NO USER");
+    }
 }

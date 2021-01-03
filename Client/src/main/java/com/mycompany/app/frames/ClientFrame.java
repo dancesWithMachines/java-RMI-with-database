@@ -63,6 +63,11 @@ public class ClientFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        list.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(list);
 
         findField.setToolTipText("Search part number");
@@ -188,6 +193,27 @@ public class ClientFrame extends javax.swing.JFrame {
         setList(client);
     }//GEN-LAST:event_findButtonActionPerformed
 
+    private void listValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listValueChanged
+        int index = list.getSelectedIndex();
+        setDetails(index);
+    }//GEN-LAST:event_listValueChanged
+
+    private void setDetails(int index){
+        Part part = partsList.get(index);
+        idField.setText(String.valueOf(part.getId()));
+        partNumberField.setText(part.getPartNumber());
+        manufacturerField.setText(part.getManufacturer());
+        partNameField.setText(part.getName());
+        quantityField.setText(String.valueOf(part.getQuantity()));
+        addedByField.setText(String.valueOf(part.getAddedBy().getId()));
+        try {
+            addedByField.setText(addedByField.getText() +" (" + client.getUserName(part.getAddedBy().getId())+")");
+        } catch (Exception ex) {
+            Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+            openErrorMessage("Cannot get username of creator");
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -231,11 +257,14 @@ public class ClientFrame extends javax.swing.JFrame {
         error.setVisible(true);
     }
     
+    DefaultListModel<String> listModel=null;
+    List<Part> partsList=null;
+    
     private void setList(Client client){
          if (findField.getText().equals("")){
             try {
-                List<Part> partsList = client.getAllParts();
-                DefaultListModel<String> listModel = new DefaultListModel<>();
+                partsList = client.getAllParts();
+                listModel = new DefaultListModel<>();
                 for (int i=0; i < partsList.size(); i++){
                     listModel.addElement(partsList.get(i).getPartNumber());
                 }
@@ -246,8 +275,8 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         } else {
              try {
-                List<Part> partsList = client.getPart(findField.getText());
-                DefaultListModel<String> listModel = new DefaultListModel<>();
+                partsList = client.getPart(findField.getText());
+                listModel = new DefaultListModel<>();
                 for (int i=0; i < partsList.size(); i++){
                     listModel.addElement(partsList.get(i).getPartNumber());
                 }

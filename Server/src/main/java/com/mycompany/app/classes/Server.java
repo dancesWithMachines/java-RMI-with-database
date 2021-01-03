@@ -52,6 +52,8 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         List<Part> partList = new ArrayList<Part>();
         while (resultSet.next()){
             Part part = new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
+            User temporaryUser = new User(resultSet.getInt("added_by"), "", "");
+            part.setAddedBy(temporaryUser);
             partList.add(part);
         }
         resultSet.close();
@@ -69,7 +71,10 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         ResultSet resultSet = statement.executeQuery(sql);
         List<Part> partList = new ArrayList<Part>();
         while (resultSet.next()){
-            partList.add(new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity")));
+            Part newPart = new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
+            User temporaryUser = new User(resultSet.getInt("added_by"), "", "");
+            newPart.setAddedBy(temporaryUser);
+            partList.add(newPart);
         }
         resultSet.close();
         connection.close();
@@ -137,6 +142,24 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         resultSet.close();
         connection.close();
         return userId;
+    }
+
+    @Override
+    public Part getSinglePart(int partId) throws Exception {
+        Class.forName(driver);
+        connection = DriverManager.getConnection(url, user, password);
+        statement = connection.createStatement();
+        String sql = "SELECT * FROM Parts WHERE id="+ partId;
+        ResultSet resultSet = statement.executeQuery(sql);
+        Part part = new Part();
+        while (resultSet.next()){
+            part = new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
+            User temporaryUser = new User(resultSet.getInt("added_by"), "", "");
+            part.setAddedBy(temporaryUser);
+        }
+        resultSet.close();
+        connection.close();
+        return part;
     }
     
 }
