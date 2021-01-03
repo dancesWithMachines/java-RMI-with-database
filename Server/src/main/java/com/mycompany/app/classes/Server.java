@@ -61,19 +61,19 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
     }
 
     @Override
-    public Part getPart(int partId) throws Exception {
+    public List<Part> getPart(String partId) throws Exception {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         statement = connection.createStatement();
-        String sql = "SELECT * FROM Parts WHERE part_number=\""+String.valueOf(partId) +"\"";
+        String sql = "SELECT * FROM Parts WHERE part_number=\""+ partId +"\"";
         ResultSet resultSet = statement.executeQuery(sql);
-        Part part = null;
+        List<Part> partList = new ArrayList<Part>();
         while (resultSet.next()){
-            part = new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
+            partList.add(new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity")));
         }
         resultSet.close();
         connection.close();
-        return part;
+        return partList;
     }
 
     @Override

@@ -7,9 +7,11 @@ package com.mycompany.app.frames;
 
 import com.mycompany.app.classes.Client;
 import com.mycompany.app.models.Part;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
@@ -60,11 +62,7 @@ public class ClientFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        list.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(list);
 
         findField.setToolTipText("Search part number");
@@ -237,26 +235,27 @@ public class ClientFrame extends javax.swing.JFrame {
          if (findField.getText().equals("")){
             try {
                 List<Part> partsList = client.getAllParts();
-                if (client == null)
-                    System.out.println("Client null");
-                if (partsList ==null)
-                    System.out.println("Partslist null");
-                System.out.println("Partslist size "+ partsList.size());
-                String[] partIds = new String[partsList.size()];
-                for (int i=0; i < partIds.length; i++){
-                    partIds[i] = partsList.get(i).getPartNumber();
+                DefaultListModel<String> listModel = new DefaultListModel<>();
+                for (int i=0; i < partsList.size(); i++){
+                    listModel.addElement(partsList.get(i).getPartNumber());
                 }
-                list = new JList(partIds);
-                list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-                list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-                list.setVisibleRowCount(-1);
-                
+                list.setModel(listModel);                 
             } catch (Exception ex) {
                 Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
                 openErrorMessage(ex.getMessage());
             }
         } else {
-                        
+             try {
+                List<Part> partsList = client.getPart(findField.getText());
+                DefaultListModel<String> listModel = new DefaultListModel<>();
+                for (int i=0; i < partsList.size(); i++){
+                    listModel.addElement(partsList.get(i).getPartNumber());
+                }
+                list.setModel(listModel);                 
+            } catch (Exception ex) {
+                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                openErrorMessage(ex.getMessage());
+            }
         }
     }
     

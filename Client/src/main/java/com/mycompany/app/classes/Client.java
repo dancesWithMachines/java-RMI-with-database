@@ -48,7 +48,7 @@ public class Client {
            throw new Exception("NO USER");
     }
     
-    public Part getPart(int partId) throws Exception{
+    public List<Part> getPart(String partId) throws Exception{
         if (user != null)
             return parts.getPart(partId);
         else
