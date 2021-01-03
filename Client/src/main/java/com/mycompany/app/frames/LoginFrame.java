@@ -130,8 +130,9 @@ public class LoginFrame extends javax.swing.JFrame {
         } else {
             try {
                 client.checkCredentials(loginInput.getText(), passwordInput.getText());
-                ErrorFrame error = new ErrorFrame("Success");
-                error.setVisible(true);
+                this.setVisible(false);
+                ClientFrame clientFrame = new ClientFrame(client);
+                clientFrame.setVisible(true);
             } catch (Exception ex) {
                 Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
                 ErrorFrame error = new ErrorFrame(ex.getMessage());

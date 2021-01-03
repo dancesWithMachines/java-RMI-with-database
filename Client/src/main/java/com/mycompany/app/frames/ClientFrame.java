@@ -5,6 +5,14 @@
  */
 package com.mycompany.app.frames;
 
+import com.mycompany.app.classes.Client;
+import com.mycompany.app.models.Part;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+
 /**
  *
  * @author Timax
@@ -14,8 +22,12 @@ public class ClientFrame extends javax.swing.JFrame {
     /**
      * Creates new form LoginFrame
      */
-    public ClientFrame() {
+    
+    Client client = null;
+    public ClientFrame(Client client) {
         initComponents();
+        this.client = client;
+        setList(client);
     }
 
     /**
@@ -58,6 +70,11 @@ public class ClientFrame extends javax.swing.JFrame {
         findField.setToolTipText("Search part number");
 
         findButton.setText("FIND");
+        findButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findButtonActionPerformed(evt);
+            }
+        });
 
         idField.setEditable(false);
 
@@ -169,6 +186,10 @@ public class ClientFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void findButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findButtonActionPerformed
+        setList(client);
+    }//GEN-LAST:event_findButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -202,9 +223,41 @@ public class ClientFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClientFrame().setVisible(true);
+                new ClientFrame(null).setVisible(true);
             }
         });
+    }
+    
+    private void openErrorMessage(String errorMessage){
+        ErrorFrame error = new ErrorFrame(errorMessage);
+        error.setVisible(true);
+    }
+    
+    private void setList(Client client){
+         if (findField.getText().equals("")){
+            try {
+                List<Part> partsList = client.getAllParts();
+                if (client == null)
+                    System.out.println("Client null");
+                if (partsList ==null)
+                    System.out.println("Partslist null");
+                System.out.println("Partslist size "+ partsList.size());
+                String[] partIds = new String[partsList.size()];
+                for (int i=0; i < partIds.length; i++){
+                    partIds[i] = partsList.get(i).getPartNumber();
+                }
+                list = new JList(partIds);
+                list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+                list.setVisibleRowCount(-1);
+                
+            } catch (Exception ex) {
+                Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
+                openErrorMessage(ex.getMessage());
+            }
+        } else {
+                        
+        }
     }
     
     private void setFields(Boolean enabled){

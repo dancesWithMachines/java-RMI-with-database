@@ -45,14 +45,14 @@ public class Client {
        if (user != null) 
             return parts.getAllParts();
        else
-           return null;
+           throw new Exception("NO USER");
     }
     
     public Part getPart(int partId) throws Exception{
         if (user != null)
             return parts.getPart(partId);
         else
-            return null;
+            throw new Exception("NO USER");
     }
     
     public void addPart(Part part) throws Exception{

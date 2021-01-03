@@ -6,55 +6,27 @@
 package com.mycompany.app.models;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+
 
 /**
  *
  * @author Timax
  */
-@Entity
-@Table(name = "Parts")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Parts.findAll", query = "SELECT p FROM Parts p"),
-    @NamedQuery(name = "Parts.findById", query = "SELECT p FROM Parts p WHERE p.id = :id"),
-    @NamedQuery(name = "Parts.findByPartNumber", query = "SELECT p FROM Parts p WHERE p.partNumber = :partNumber"),
-    @NamedQuery(name = "Parts.findByName", query = "SELECT p FROM Parts p WHERE p.name = :name"),
-    @NamedQuery(name = "Parts.findByManufacturer", query = "SELECT p FROM Parts p WHERE p.manufacturer = :manufacturer"),
-    @NamedQuery(name = "Parts.findByQuantity", query = "SELECT p FROM Parts p WHERE p.quantity = :quantity")})
+
 public class Part implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "part_number")
+    
     private String partNumber;
-    @Basic(optional = false)
-    @Column(name = "name")
+    
     private String name;
-    @Basic(optional = false)
-    @Column(name = "manufacturer")
+    
     private String manufacturer;
-    @Basic(optional = false)
-    @Column(name = "quantity")
+    
     private int quantity;
-    @JoinColumn(name = "added_by", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    
     private User addedBy;
 
     public Part() {

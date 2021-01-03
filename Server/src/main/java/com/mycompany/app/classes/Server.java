@@ -51,10 +51,11 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         ResultSet resultSet = statement.executeQuery(sql);
         List<Part> partList = new ArrayList<Part>();
         while (resultSet.next()){
-            Part part = new Part(resultSet.getInt("id"), resultSet.getString("partNumber"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
+            Part part = new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
             partList.add(part);
         }
         resultSet.close();
+        System.out.println("There is a part no " + partList.get(0).getId());
         connection.close();
         return partList;
     }
@@ -68,7 +69,7 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         ResultSet resultSet = statement.executeQuery(sql);
         Part part = null;
         while (resultSet.next()){
-            part = new Part(resultSet.getInt("id"), resultSet.getString("partNumber"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
+            part = new Part(resultSet.getInt("id"), resultSet.getString("part_number"), resultSet.getString("name"), resultSet.getString("manufacturer"), resultSet.getInt("quantity"));
         }
         resultSet.close();
         connection.close();
@@ -110,16 +111,16 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         statement = connection.createStatement();
         String sql = "SELECT * FROM Users where login=\""+ userName +"\"";
         ResultSet resultSet = statement.executeQuery(sql);
-        User user = null;
+        User currentUser = null;
         while (resultSet.next()){
-            user = new User(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("password"));
+            currentUser = new User(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("password"));
         }
-        System.out.println(user);
+        System.out.println(currentUser);
         resultSet.close();
         connection.close();
-        if (password != user.getPassword())
-            user = null;
-        return user;
+        if (!password.equals(currentUser.getPassword()))
+            currentUser = null;
+        return currentUser;
     }
 
     @Override

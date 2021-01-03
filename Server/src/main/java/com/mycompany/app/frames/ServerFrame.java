@@ -6,7 +6,10 @@
 package com.mycompany.app.frames;
 
 import com.mycompany.app.classes.Server;
+import com.mycompany.app.models.Part;
+import com.mycompany.app.models.User;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,6 +86,16 @@ public class ServerFrame extends javax.swing.JFrame {
             try {
                 server = new Server();
                 setStatus("Server running");
+                try {
+                    User user = server.checkCredentials("user1", "abc");
+                    if (user == null)
+                        setStatus("User null");
+                    else
+                        setStatus(user.getLogin() + " "+ user.getId());
+                } catch (Exception ex) {
+                    Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    setStatus(ex.getMessage());
+                }
             } catch (RemoteException ex) {
                 Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
                 setStatus("Server Error");
