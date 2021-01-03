@@ -43,6 +43,7 @@ public class ServerFrame extends javax.swing.JFrame {
         serwerSwitch = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         serverStatus.setEditable(false);
         serverStatus.setText("Server not running");
@@ -79,29 +80,16 @@ public class ServerFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void serwerSwitchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serwerSwitchActionPerformed
-        if (isRunning){
-            server = null;
-            setStatus("Server offline");
-        } else {
+        if (!isRunning){
             try {
                 server = new Server();
                 setStatus("Server running");
-                try {
-                    User user = server.checkCredentials("user1", "abc");
-                    if (user == null)
-                        setStatus("User null");
-                    else
-                        setStatus(user.getLogin() + " "+ user.getId());
-                } catch (Exception ex) {
-                    Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    setStatus(ex.getMessage());
-                }
+                isRunning = true;
             } catch (RemoteException ex) {
                 Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
                 setStatus("Server Error");
             }
         }
-        isRunning = !isRunning;
         setButton(isRunning);
     }//GEN-LAST:event_serwerSwitchActionPerformed
 

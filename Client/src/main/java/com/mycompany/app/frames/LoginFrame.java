@@ -44,6 +44,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Login");
 
@@ -130,6 +131,8 @@ public class LoginFrame extends javax.swing.JFrame {
         } else {
             try {
                 client.checkCredentials(loginInput.getText(), passwordInput.getText());
+                if (client.getUser() == null)
+                    throw new Exception("No such credentials");
                 this.setVisible(false);
                 ClientFrame clientFrame = new ClientFrame(client);
                 clientFrame.setVisible(true);

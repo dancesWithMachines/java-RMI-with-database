@@ -61,6 +61,7 @@ public class ClientFrame extends javax.swing.JFrame {
         addButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         list.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -238,7 +239,6 @@ public class ClientFrame extends javax.swing.JFrame {
     }
     
     private void setDetails(int index){
-        if (partsList.size()>0){
             Part part = partsList.get(index);
             idField.setText(String.valueOf(part.getId()));
             partNumberField.setText(part.getPartNumber());
@@ -252,7 +252,6 @@ public class ClientFrame extends javax.swing.JFrame {
                 Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
                 openErrorMessage("Cannot get username of creator");
             }
-        }
     }
     
     /**
@@ -305,13 +304,11 @@ public class ClientFrame extends javax.swing.JFrame {
          if (findField.getText().equals("")){
             try {
                 partsList = client.getAllParts();
-                if (partsList.size() > 0){
-                    listModel = new DefaultListModel<>();
-                    for (int i=0; i < partsList.size(); i++){
-                        listModel.addElement(partsList.get(i).getPartNumber());
-                    }
-                    list.setModel(listModel);
+                listModel = new DefaultListModel<>();
+                for (int i=0; i < partsList.size(); i++){
+                    listModel.addElement(partsList.get(i).getPartNumber());
                 }
+                list.setModel(listModel);
             } catch (Exception ex) {
                 Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
                 openErrorMessage("No parts to display");
@@ -319,13 +316,11 @@ public class ClientFrame extends javax.swing.JFrame {
         } else {
              try {
                 partsList = client.getPart(findField.getText());
-                if (partsList.size() > 0){
-                    listModel = new DefaultListModel<>();
-                    for (int i=0; i < partsList.size(); i++){
-                        listModel.addElement(partsList.get(i).getPartNumber());
-                    }
-                    list.setModel(listModel);
+                listModel = new DefaultListModel<>();
+                for (int i=0; i < partsList.size(); i++){
+                    listModel.addElement(partsList.get(i).getPartNumber());
                 }
+                list.setModel(listModel);
             } catch (Exception ex) {
                 Logger.getLogger(ClientFrame.class.getName()).log(Level.SEVERE, null, ex);
                 openErrorMessage("No parts to display");

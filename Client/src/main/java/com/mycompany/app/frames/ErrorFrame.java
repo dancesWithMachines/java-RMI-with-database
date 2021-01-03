@@ -32,8 +32,11 @@ public class ErrorFrame extends javax.swing.JFrame {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
+        setResizable(false);
 
         errorMessage.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        errorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorMessage.setText("ERRORerrorERRORerrorERRORerrorERRO");
 
         okButton.setText("OK");
