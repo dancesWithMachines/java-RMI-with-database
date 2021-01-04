@@ -34,11 +34,13 @@ public class Client {
         return user;
     }
     
+    String bindName = "Serwery aplikacyjne";
+    
     public Client() throws RemoteException, NotBoundException {
         //Client c = new Client();
         this.connectRemote();
-        parts = (PartsInterface) registry.lookup("hi serwer");
-        users = (UsersInterface) registry.lookup("hi serwer"); 
+        parts = (PartsInterface) registry.lookup(bindName);
+        users = (UsersInterface) registry.lookup(bindName); 
     }
 
     private void connectRemote() throws RemoteException {

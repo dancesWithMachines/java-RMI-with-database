@@ -122,7 +122,7 @@ public class LoginFrame extends javax.swing.JFrame {
             client = new Client();
         } catch (Exception ex) {
             Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
-            ErrorFrame error = new ErrorFrame(ex.getMessage());
+            ErrorFrame error = new ErrorFrame("Error connecting to server");
             error.setVisible(true);
         }
         if (loginInput.getText() == "" || passwordInput.getText() == ""){

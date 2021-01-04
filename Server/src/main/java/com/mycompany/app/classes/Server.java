@@ -9,6 +9,8 @@ import com.mycompany.app.interfaces.PartsInterface;
 import com.mycompany.app.interfaces.UsersInterface;
 import com.mycompany.app.models.Part;
 import com.mycompany.app.models.User;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.sql.Statement;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -25,13 +27,24 @@ import java.util.*;
  */
 public class Server extends UnicastRemoteObject implements PartsInterface, UsersInterface {
     
-    public Server() throws RemoteException {
-        try {
-            Registry reg = LocateRegistry.createRegistry(4444);
-            reg.rebind("hi serwer", this);
+    Registry registry = null;
+    String bindName = "Serwery aplikacyjne";
+    public Server() throws RemoteException{
+        registry = LocateRegistry.createRegistry(4444);
+    }
+    
+    public void startServer() throws RemoteException {
+        try {            
+            registry.rebind(bindName, this);
+            UnicastRemoteObject.exportObject(this, 4444);
         } catch (RemoteException e) {
-            System.out.println("Exception" + e);
+            System.out.println("Exception" + e);            
         }
+    }
+    
+    public void stopServer() throws RemoteException, AccessException, NotBoundException{
+        registry.unbind(bindName);
+        UnicastRemoteObject.unexportObject(this, false);
     }
     
     String url = "jdbc:mysql://remotemysql.com:3306/bBx5ctrGX5?zeroDateTimeBehavior=CONVERT_TO_NULL";

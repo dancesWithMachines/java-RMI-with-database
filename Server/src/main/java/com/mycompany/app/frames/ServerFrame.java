@@ -8,6 +8,7 @@ package com.mycompany.app.frames;
 import com.mycompany.app.classes.Server;
 import com.mycompany.app.models.Part;
 import com.mycompany.app.models.User;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,6 +25,12 @@ public class ServerFrame extends javax.swing.JFrame {
      */
     public ServerFrame() {
         initComponents();
+        try {
+            server = new Server();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+            setStatus("Cannot create server");
+        }
     }
 
     /**
@@ -82,14 +89,25 @@ public class ServerFrame extends javax.swing.JFrame {
     private void serwerSwitchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serwerSwitchActionPerformed
         if (!isRunning){
             try {
-                server = new Server();
+                server.startServer();
                 setStatus("Server running");
-                isRunning = true;
             } catch (RemoteException ex) {
                 Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
                 setStatus("Server Error");
             }
+        } else {
+            try {
+                server.stopServer();
+            } catch (RemoteException ex) {
+                Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+                setStatus("Server Error");
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ServerFrame.class.getName()).log(Level.SEVERE, null, ex);
+                setStatus("Server Error");
+            }
+            setStatus("Server offline");
         }
+        isRunning = !isRunning;
         setButton(isRunning);
     }//GEN-LAST:event_serwerSwitchActionPerformed
 
