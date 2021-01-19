@@ -20,6 +20,8 @@ import java.sql.Connection;
 import java.util.List;
 import java.sql.*; 
 import java.util.*;  
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,6 +31,7 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
     
     Registry registry = null;
     String bindName = "Serwery aplikacyjne";
+    private ResourceBundle reader = null;
     public Server() throws RemoteException{
         registry = LocateRegistry.createRegistry(4444);
     }
@@ -46,6 +49,14 @@ public class Server extends UnicastRemoteObject implements PartsInterface, Users
         registry.unbind(bindName);
         UnicastRemoteObject.unexportObject(this, false);
     }
+    
+    //     ___                                                                                
+    //    ( / \     _/_      /                       o      /  _/_    /                       
+    //     /  /__,  /  __,  /  __,  (   _    _ _ _  ,  _,  /_  /     /  _    _,  __ _ _   _   
+    //   (/\_/(_/(_(__(_/(_/_)(_/(_/_)_(/_  / / / /_(_(_)_/ /_(__   /_)(/_  (_)_(_)/ / /_(/_  
+    //                                                 /|                    /|               
+    //                                                (/                    (/     
+    // Check for db file if you are interested in getting it to work
     
     String url = "jdbc:mysql://remotemysql.com:3306/bBx5ctrGX5?zeroDateTimeBehavior=CONVERT_TO_NULL";
     String user = "bBx5ctrGX5";
